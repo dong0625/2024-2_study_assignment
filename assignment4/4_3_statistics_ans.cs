@@ -20,7 +20,50 @@ namespace statistics
 
             int stdCount = data.GetLength(0) - 1;
             // ---------- TODO ----------
+            Console.WriteLine("Average Scores:");
+            for (int c = 2; c < data.GetLength(1); c++){
+                double sum_score = 0;
+                for (int r = 1; r <= stdCount; r++){
+                    sum_score += double.Parse(data[r, c]);
+                }
+                Console.WriteLine($"{data[0, c]}: {sum_score / stdCount:F2}");
+            }
             
+            Console.WriteLine("\nMax and min Scores:");
+            for (int c = 2; c < data.GetLength(1); c++){
+                int max = int.MinValue, min = int.MaxValue;
+                for (int r = 1; r <= stdCount; r++){
+                    if (max < int.Parse(data[r, c]))
+                        max = int.Parse(data[r, c]);
+                    if (min > int.Parse(data[r, c]))
+                        min = int.Parse(data[r, c]);
+                }
+                Console.WriteLine($"{data[0, c]}: ({max}, {min})");
+            }
+            
+            Console.WriteLine("\nStudents rank by total scores:");
+            int[] scores = new int[stdCount];
+            string[] ranking = new string[stdCount];
+            for (int r = 1; r < data.GetLength(0); r++){
+                for (int c = 2; c < data.GetLength(1); c++){
+                    scores[r - 1] += int.Parse(data[r, c]);
+                }
+            }
+            var indexedArr = scores
+                .Select((value, index) => new { Index = index, Value = value }) // 인덱스와 값을 묶음
+                .OrderBy(x => -x.Value)  // 값 기준으로 정렬
+                .ToList();
+                
+            for (int i = 0; i < stdCount; i++)
+                switch(i){
+                    case 0: ranking[indexedArr[i].Index] = "1st"; break;
+                    case 1: ranking[indexedArr[i].Index] = "2nd"; break;
+                    case 2: ranking[indexedArr[i].Index] = "3rd"; break;
+                    default: ranking[indexedArr[i].Index] = $"{i + 1}th"; break;
+                }
+                
+            for (int i = 0; i < stdCount; i++)
+                Console.WriteLine($"{data[i + 1, 1]}: {ranking[i]}");
             // --------------------
         }
     }

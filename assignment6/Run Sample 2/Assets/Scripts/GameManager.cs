@@ -38,9 +38,11 @@ public class GameManager : MonoBehaviour
         // ---------- TODO ----------
         if (Character != null)
         {
-            Vector3 tmp = Character.transform.position;
-            tmp.z = CamObj.transform.position.z;
-            CamObj.transform.position = tmp;
+            CamObj.transform.position = new Vector3(
+                Character.transform.position.x,
+                Character.transform.position.y,
+                CamObj.transform.position.z
+                );
         }
         // -------------------- 
     }
@@ -51,7 +53,7 @@ public class GameManager : MonoBehaviour
         // ---------- TODO ---------- 
         if (Character != null)
         {
-            Character.transform.position += new Vector3(CharacterSpeed * Time.deltaTime, 0, 0);
+            Character.transform.position += new Vector3(CharacterSpeed, 0, 0) * Time.deltaTime;
         }
         // -------------------- 
     }

@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
     IEnumerator DisplayMessageCoroutine(string message, float duration)
     {
         MessageText.text = message;
-        yield return new WaitForSeconds(duration);
+        yield return 1;
         MessageText.text = "";
     }
 

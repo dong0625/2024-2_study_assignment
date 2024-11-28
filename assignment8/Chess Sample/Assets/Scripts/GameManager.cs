@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -35,7 +36,15 @@ public class GameManager : MonoBehaviour
     {
         // 8x8로 타일들을 배치
         // --- TODO ---
-        
+        for (int x = 0; x < 8; x++)
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                GameObject newTile = Instantiate(TilePrefab);
+                Tiles[x, y] = newTile.GetComponent<Tile>();
+                Tiles[x, y].Set((x, y));
+            }
+        }
         // ------
 
         PlacePieces(1);
@@ -46,7 +55,12 @@ public class GameManager : MonoBehaviour
     {
         // 체스 말들을 배치
         // --- TODO ---
-        
+        int y1 = direction == 1 ? 0 : 7;
+        int y2 = direction == 1 ? 1 : 6;
+        for (int i = 0; i < 8; i++) {
+            Pieces[i, y1] = PlacePiece(i, Tiles[i, y1].MyPos, direction);
+            Pieces[i, y2] = PlacePiece(8, Tiles[i, y2].MyPos, direction);
+        }
         // ------
     }
 
@@ -54,7 +68,10 @@ public class GameManager : MonoBehaviour
     {
         // 체스 말 하나를 배치 후 initialize
         // --- TODO ---
-        
+        GameObject newPieceObj = Instantiate(PiecePrefabs[pieceType]);
+        Piece newPieceCom = newPieceObj.GetComponent<Piece>();
+        newPieceCom.initialize(pos, direction);
+        return newPieceCom;
         // ------
     }
 
@@ -77,10 +94,19 @@ public class GameManager : MonoBehaviour
     public void Move(Piece piece, (int, int) targetPos)
     {
         if (!IsValidMove(piece, targetPos)) return;
-        
+
         // 체스 말을 이동하고, 만약 해당 자리에 상대 말이 있다면 삭제
         // --- TODO ---
-        
+        (int x, int y) = piece.MyPos;
+        Pieces[x, y] = null;
+        (int px, int py) = targetPos;
+        if (Pieces[px, py] != null)
+        {
+            Destroy(Pieces[px, py].GameObject());
+        }
+        Pieces[px, py] = piece;
+        piece.MoveTo(targetPos);
+        ChangeTurn();
         // ------
     }
 
@@ -88,7 +114,8 @@ public class GameManager : MonoBehaviour
     {
         // 턴을 변경하고, UI에 표시
         // --- TODO ---
-        
+        CurrentTurn *= -1;
+        uiManager.UpdateTurn(CurrentTurn);
         // ------
     }
 }

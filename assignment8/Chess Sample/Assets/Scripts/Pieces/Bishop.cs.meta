@@ -3,7 +3,9 @@ guid: ae801ea23090e21448bc59c2a6e99144
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - WhiteSprite: {fileID: 21300000, guid: 2463ef67e6c85224580c432e7c1d6b87, type: 3}
+  - BlackSprite: {fileID: 21300000, guid: c2e3e239fc11cf5489cb597df24581f2, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

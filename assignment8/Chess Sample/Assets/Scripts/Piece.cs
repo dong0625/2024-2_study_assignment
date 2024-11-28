@@ -30,7 +30,18 @@ public abstract class Piece : MonoBehaviour
     {
         // direction에 따라 sprite를 설정하고 회전함
         // --- TODO ---
-        
+        if (direction == 1)
+        {
+            MySpriteRenderer.sprite = WhiteSprite;
+            MySpriteRenderer.flipX = false;
+            MySpriteRenderer.flipY = false;
+        }
+        else
+        {
+            MySpriteRenderer.sprite = BlackSprite;
+            MySpriteRenderer.flipX = true;
+            MySpriteRenderer.flipY = true;
+        }
         // ------
     }
 
@@ -38,7 +49,9 @@ public abstract class Piece : MonoBehaviour
     {
         // 말을 이동시킴
         // --- TODO ---
-        
+        (int x, int y) = MyPos = targetPos;
+        MyGameManager.Pieces[x, y] = this;
+        GetComponent<Transform>().position = Utils.ToRealPos(targetPos);
         // ------
     }
 
